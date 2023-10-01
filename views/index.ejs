@@ -1,0 +1,120 @@
+
+<!-- Hauptstruktur Was man sieht-->
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="/css/app.css" />
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+            <!-- stylesheet macht alles DICK Bitte Beachten-->
+
+
+    </head>
+    <body>
+           
+      <p> Anzahl der Einträge im Blog: <%= entries.length %> </p>   <!-- reads outs the lenght of the list = Output = 2 -->
+      <% for(let entry of entries) { %>
+            <div class = "entry" >   
+                <!-- creates objects in entry.js-->
+                <h2><%= entry.title %></h2>  
+                <p><%= (entry.content) %></p>
+                <p>Public Date: <%= entry.publicDate.toISOString() %></p>
+               <!-- Image upload,-->
+               <% if (entry.image) { %>
+                <img src="/uploads/<%= entry.image %>" alt="Blog Image">
+              <% } %>
+                <!--Edit buttom schwierigste-->
+                <form class="Edit-form" method="POST" action="/blog/edit/<%= entry.id %>">
+                  <label for="Edit-content">Edit:</label>
+                  <textarea id="Edit-content" name="content"></textarea>
+                  <button type="submit">Speichern</button>
+              </form>
+                 <!--DELETE buttom-->
+                <form class="delete-form" method="POST" action="/blog/delete">
+                    <input type="hidden" name="entryId" value="<%= entry.id %>" /> <!--greift auf id der List zu-->
+                    <button type="submit" class="delete-button">Löschen</button>
+                  </form>
+                  <!-- KOmmentarsektion-->
+                  <h5>Kommentarsektion</h5>
+                  <ul>
+                      <% for (let comment of entry.comments) { %>
+                          <p> <strong><%= comment.visitor %> </strong> : <%= comment.comment %> </p>   
+                      <% } %>
+                  </ul>
+                  <form class="comment-form" method="POST" action="/blog/<%= entry.id %>/add-comment">
+                    <!-- Feld für Besucher und -->
+                    <label for="visitor">Besucher:</label>
+                    <input type="text" id="visitor" name="visitor" />
+                    <label for="comment">Kommentar:</label>
+                    <textarea id="comment" name="comment"></textarea>
+                          <!--comment buttom-->
+                      <button type="submit">Kommentieren</button>
+                  </form>
+                  
+                  <hr /> 
+            </div>
+        <% } %>
+    </body>
+    
+    <script>
+        function stripHtmlTags(html) {
+          let div = document.createElement('div');
+          div.innerHTML = html;
+          return div.textContent || div.innerText || '';
+        }
+      </script>
+    
+<!-- Buttons außerhalb des Plates für Comment -->
+<form class="new-entry" method="POST" action="/blog/new" enctype="multipart/form-data">
+         <label for="title">Titel:</label>
+    <input type="text" name="title" id="title">
+               <br>
+    <label for="content">Inhalt:</label>
+    <br>
+<textarea name="content" id="content"></textarea>
+    <br>
+    <label for="image">Bild Hochladen (optional):</label>
+    <input type="file" name="image" id="image">
+<br>
+      <button type="submit">Blog Posten</button>
+  </form>
+  
+  
+
+
+  <!-- i want to upload my images into my node js server, how i do that in-->
+
+ <!-- create image upload for the server site-->
+
+
+ <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+  <script type="text/javascript">
+   // CKEDITOR.replace('content');
+  </script>
+</body>
+
+
+ 
+<!-- goes into server-->
+<!-- <input type="submit" value="senden" /> -->
+
+<script src="/node_modules/tinymce/tinymce.min.js"></script>
+<script>
+tinymce.init({
+    selector: '#content',
+    plugins: 'lists link',
+    toolbar: 'undo redo | bold italic | bullist numlist | link',
+    menubar: false
+  });
+</script>
+
+
+<script src="\NodeProjekt\public\css\js\index.js"></script> 
+
+
+
+
+ 
+
+

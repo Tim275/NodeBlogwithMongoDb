@@ -57,14 +57,7 @@
         <% } %>
     </body>
     
-    <script>
-        function stripHtmlTags(html) {
-          let div = document.createElement('div');
-          div.innerHTML = html;
-          return div.textContent || div.innerText || '';
-        }
-      </script>
-    
+
 <!-- Buttons außerhalb des Plates für Comment -->
 <form class="new-entry" method="POST" action="/blog/new" enctype="multipart/form-data">
          <label for="title">Titel:</label>
